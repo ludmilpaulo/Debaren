@@ -21,7 +21,7 @@ ADMINS = [
 ]
 
 
-FRONTEND_URL = "http://localhost:3000"
+FRONTEND_URL = "https://debaren.vercel.app"
 
 
 # Application definition
@@ -51,7 +51,23 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ALLOW_ALL_ORIGINS = True  # or restrict to Next.js domain
+CORS_ALLOW_ALL_ORIGINS = True
+
+CORS_ALLOW_METHODS = [
+    "GET",
+    "POST",
+    "PUT",
+    "PATCH",
+    "DELETE",
+    "OPTIONS"
+]
+
+CORS_ALLOW_HEADERS = [
+    "authorization",
+    "content-type",
+    "x-csrftoken",
+    "x-requested-with",
+]
 
 # REST Framework base config
 REST_FRAMEWORK = {
