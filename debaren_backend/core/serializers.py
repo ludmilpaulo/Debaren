@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from .models import Venue, PopupVenue, WifiSpot, SchoolProgram, About, FooterSocialLink
+from .models import Venue, PopupVenue, WifiSpot, SchoolProgram, About, FooterSocialLink, HeroSection, ContactMessage
+
 
 class VenueSerializer(serializers.ModelSerializer):
     class Meta:
@@ -31,3 +32,18 @@ class FooterSocialLinkSerializer(serializers.ModelSerializer):
     class Meta:
         model = FooterSocialLink
         fields = ['platform', 'url', 'icon', 'order']
+        
+    
+class HeroSectionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = HeroSection
+        fields = ["title", "subtitle", "cta_text", "cta_url"]
+        
+        
+
+class ContactMessageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ContactMessage
+        fields = ["id", "name", "email", "message", "created_at"]
+        read_only_fields = ["id", "created_at"]
+

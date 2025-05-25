@@ -9,13 +9,21 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "'": "ckeditor/ckeditor5-build-classic",
+    "@ckeditor/ckeditor5-build-classic": "^44.3.0",
+    "@ckeditor/ckeditor5-react": "^9.5.0",
+    "@headlessui/react": "^2.2.4",
+    "@heroicons/react": "^2.2.0",
     "@reduxjs/toolkit": "^2.8.2",
+    "axios": "^1.9.0",
+    "dayjs": "^1.11.13",
     "framer-motion": "^12.12.2",
     "next": "15.3.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-icons": "^5.5.0",
-    "react-redux": "^9.2.0"
+    "react-redux": "^9.2.0",
+    "swr": "^2.3.3"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

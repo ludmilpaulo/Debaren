@@ -1,0 +1,144 @@
+[
+  {
+    "model": "core.venue",
+    "pk": 1,
+    "fields": {
+      "name": "Cape Town Conference Centre",
+      "venue_type": "city",
+      "description": "A state-of-the-art conference venue in the heart of Cape Town, ideal for events, exhibitions, and corporate meetings.",
+      "image": ""
+    }
+  },
+  {
+    "model": "core.venue",
+    "pk": 2,
+    "fields": {
+      "name": "Johannesburg Country Estate",
+      "venue_type": "country",
+      "description": "A serene estate surrounded by nature, perfect for retreats, weddings, and executive getaways.",
+      "image": ""
+    }
+  },
+  {
+    "model": "core.venue",
+    "pk": 3,
+    "fields": {
+      "name": "Stellenbosch Town Hall",
+      "venue_type": "town",
+      "description": "Historic town hall venue with modern amenities, ideal for community gatherings and small-scale conferences.",
+      "image": ""
+    }
+  },
+  {
+    "model": "core.popupvenue",
+    "pk": 1,
+    "fields": {
+      "name": "PopUp Studio Sandton",
+      "location": "Sandton, Johannesburg",
+      "image": ""
+    }
+  },
+  {
+    "model": "core.popupvenue",
+    "pk": 2,
+    "fields": {
+      "name": "Urban Market Space",
+      "location": "Woodstock, Cape Town",
+      "image": ""
+    }
+  },
+  {
+    "model": "core.wifispot",
+    "pk": 1,
+    "fields": {
+      "name": "TechHub Coffee Bar",
+      "address": "101 Loop Street, Cape Town"
+    }
+  },
+  {
+    "model": "core.wifispot",
+    "pk": 2,
+    "fields": {
+      "name": "The Creative Lounge",
+      "address": "15 Rivonia Rd, Johannesburg"
+    }
+  },
+  {
+    "model": "core.schoolprogram",
+    "pk": 1,
+    "fields": {
+      "name": "Creative Coding Bootcamp",
+      "description": "An immersive 8-week program focused on web and mobile development skills for all ages.",
+      "image": ""
+    }
+  },
+  {
+    "model": "core.schoolprogram",
+    "pk": 2,
+    "fields": {
+      "name": "Business Leadership Academy",
+      "description": "A weekend school designed to empower future leaders with entrepreneurial skills and practical business insights.",
+      "image": ""
+    }
+  },
+  {
+    "model": "core.about",
+    "pk": 1,
+    "fields": {
+      "title": "About Debaren",
+      "description": "Debaren is South Africa’s premier platform for discovering inspiring venues, creative pop-up spaces, and WiFi-friendly locations. Whether you’re planning a conference, an art show, or a remote work session, our curated spaces blend innovation and hospitality. Our mission is to connect people with the perfect space for every occasion, making every gathering exceptional.",
+      "image": "",
+      "updated_at": "2024-05-24T00:00:00Z"
+    }
+  },
+  {
+    "model": "core.footersociallink",
+    "pk": 1,
+    "fields": {
+      "platform": "linkedin",
+      "url": "https://www.linkedin.com/company/debaren",
+      "icon": "FaLinkedin",
+      "order": 1
+    }
+  },
+  {
+    "model": "core.footersociallink",
+    "pk": 2,
+    "fields": {
+      "platform": "instagram",
+      "url": "https://www.instagram.com/debaren",
+      "icon": "FaInstagram",
+      "order": 2
+    }
+  },
+  {
+    "model": "core.footersociallink",
+    "pk": 3,
+    "fields": {
+      "platform": "facebook",
+      "url": "https://www.facebook.com/debaren",
+      "icon": "FaFacebook",
+      "order": 3
+    }
+  },
+  {
+    "model": "core.footersociallink",
+    "pk": 4,
+    "fields": {
+      "platform": "pinterest",
+      "url": "https://www.pinterest.com/debaren",
+      "icon": "FaPinterest",
+      "order": 4
+    }
+  },
+  {
+    "model": "core.footersociallink",
+    "pk": 5,
+    "fields": {
+      "platform": "tiktok",
+      "url": "https://www.tiktok.com/@debaren",
+      "icon": "FaTiktok",
+      "order": 5
+    }
+  }
+]
