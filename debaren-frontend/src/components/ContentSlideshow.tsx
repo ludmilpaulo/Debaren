@@ -8,30 +8,25 @@ import {
   useGetPopupVenuesQuery,
   useGetSchoolProgramsQuery,
 } from "@/services/debarenApi";
+import type { Venue, PopupVenue, SchoolProgram } from "@/types/debaren";
 import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/solid";
 
-type SlideItem = {
-  id: number;
-  title: string;
-  description?: string;
-  subtitle?: string;
-  image?: string;
-  type: "Venue" | "PopupVenue" | "SchoolProgram";
-  location?: string;
-  venue_type?: string;
-};
+type SlideItem =
+  | { id: number; title: string; description: string; image?: string; type: "Venue"; venue_type: Venue["venue_type"]; }
+  | { id: number; title: string; subtitle: string; image?: string; type: "PopupVenue"; }
+  | { id: number; title: string; description: string; image?: string; type: "SchoolProgram"; };
 
 function buildSlides(
-  venues: any[] = [],
-  popupVenues: any[] = [],
-  schoolPrograms: any[] = []
+  venues: Venue[] = [],
+  popupVenues: PopupVenue[] = [],
+  schoolPrograms: SchoolProgram[] = []
 ): SlideItem[] {
   return [
     ...venues.map((v) => ({
       id: v.id,
       title: v.name,
       description: v.description,
-      image: v.image,
+      image: v.image ?? undefined,
       type: "Venue" as const,
       venue_type: v.venue_type,
     })),
@@ -39,18 +34,19 @@ function buildSlides(
       id: v.id,
       title: v.name,
       subtitle: v.location,
-      image: v.image,
+      image: v.image ?? undefined,
       type: "PopupVenue" as const,
     })),
     ...schoolPrograms.map((p) => ({
       id: p.id,
       title: p.name,
       description: p.description,
-      image: p.image,
+      image: p.image ?? undefined,
       type: "SchoolProgram" as const,
     })),
   ];
 }
+
 
 export default function ContentSlideshow() {
   const { data: venues, isLoading: venuesLoading } = useGetVenuesQuery();
@@ -66,25 +62,16 @@ export default function ContentSlideshow() {
   const [isHovering, setIsHovering] = useState(false);
   const autoplayRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Keen Slider setup
   const [sliderRef, slider] = useKeenSlider<HTMLDivElement>({
     loop: true,
-    slides: {
-      perView: 1.15,
-      spacing: 24,
-    },
+    slides: { perView: 1.15, spacing: 24 },
     breakpoints: {
-      "(min-width: 640px)": {
-        slides: { perView: 2.2, spacing: 32 },
-      },
-      "(min-width: 1024px)": {
-        slides: { perView: 3.2, spacing: 40 },
-      },
+      "(min-width: 640px)": { slides: { perView: 2.2, spacing: 32 } },
+      "(min-width: 1024px)": { slides: { perView: 3.2, spacing: 40 } },
     },
     slideChanged: (s) => setCurrentSlide(s.track.details.rel),
   });
 
-  // Autoplay logic
   useEffect(() => {
     if (!slider.current || slides.length <= 1) return;
     if (isHovering) {
@@ -149,7 +136,6 @@ export default function ContentSlideshow() {
             aria-label={slide.title}
           >
             <div className="bg-white/80 rounded-2xl shadow-xl overflow-hidden group-hover:scale-105 hover:scale-105 transition-transform duration-300 relative border border-yellow-100">
-              {/* Image */}
               {slide.image ? (
                 <div className="relative w-full aspect-[16/10] bg-gray-100">
                   <Image
@@ -164,7 +150,6 @@ export default function ContentSlideshow() {
                     className="object-cover"
                     priority={idx < 3}
                   />
-                  {/* Overlay gradient */}
                   <div className="absolute inset-0 bg-gradient-to-t from-yellow-400/30 via-transparent to-transparent pointer-events-none" />
                 </div>
               ) : (
@@ -172,11 +157,10 @@ export default function ContentSlideshow() {
                   <span className="text-lg text-slate-400">No image</span>
                 </div>
               )}
-              {/* Card Body */}
               <div className="p-4 relative">
                 <div className="text-xs font-bold uppercase tracking-wide text-yellow-700 mb-1">
-                  {slide.type === "Venue"
-                    ? slide.venue_type ?? "Venue"
+                  {"venue_type" in slide
+                    ? slide.venue_type
                     : slide.type === "PopupVenue"
                     ? "Popup Venue"
                     : "School Program"}
@@ -184,10 +168,10 @@ export default function ContentSlideshow() {
                 <div className="text-lg font-semibold text-slate-900 mb-1 truncate">
                   {slide.title}
                 </div>
-                {slide.subtitle && (
+                {"subtitle" in slide && slide.subtitle && (
                   <div className="text-sm text-slate-500 mb-1">{slide.subtitle}</div>
                 )}
-                {slide.description && (
+                {"description" in slide && slide.description && (
                   <div className="text-xs text-slate-500 mt-1 line-clamp-2">{slide.description}</div>
                 )}
                 <a
