@@ -1,10 +1,11 @@
 import Hero from "@/components/Hero";
+import ContentSlideshow from "@/components/ContentSlideshow";
 
 export default function HomePage() {
   return (
     <div>
       <Hero />
-      {/* Later: Add feature cards for Venue Types, Popup, WiFi, etc. */}
+      <ContentSlideshow />
     </div>
   );
 }
