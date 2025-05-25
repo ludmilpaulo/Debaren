@@ -12,7 +12,7 @@ import type {
 
 export const debarenApi = createApi({
   reducerPath: "debarenApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://127.0.0.1:8000/api/" }),
+  baseQuery: fetchBaseQuery({ baseUrl: "https://debaren.pythonanywhere.com/api/" }),
   endpoints: (builder) => ({
     getVenues: builder.query<Venue[], void>({ query: () => "venues/" }),
     getVenuesByType: builder.query<Venue[], VenueType>({
