@@ -29,7 +29,9 @@ export default function AboutPage() {
 
       {/* Error state */}
       {!isLoading && error && (
-        <div className="text-center text-red-600 mt-20">Could not load About info. Please try again.</div>
+        <div className="text-center text-red-600 mt-20">
+          Could not load About info. Please try again.
+        </div>
       )}
 
       {/* Main About Content */}
@@ -68,7 +70,9 @@ export default function AboutPage() {
             {/* Highlights / Vision */}
             {Array.isArray(data.highlights) && data.highlights.length > 0 && (
               <div className="rounded-2xl bg-white shadow-lg p-8 border border-yellow-100 mb-10">
-                <h2 className="text-2xl font-bold text-cyan-600 mb-2">What We Offer</h2>
+                <h2 className="text-2xl font-bold text-cyan-600 mb-2">
+                  What We Offer
+                </h2>
                 <ul className="list-disc pl-5 text-slate-700 space-y-2">
                   {data.highlights.map((point: string, i: number) => (
                     <li key={i}>{point}</li>
@@ -88,10 +92,10 @@ export default function AboutPage() {
                 </h2>
                 <p className="text-slate-700 text-center max-w-xl mb-4">
                   Passionate about connecting people, places, and possibilities? At{" "}
-                  <span className="font-semibold text-yellow-700">Debaren</span>, we’re always on the lookout for creative minds and driven individuals to help us shape the future of venues and event spaces across South Africa.
+                  <span className="font-semibold text-yellow-700">Debaren</span>, we&apos;re always on the lookout for creative minds and driven individuals to help us shape the future of venues and event spaces across South Africa.
                 </p>
                 <p className="text-slate-600 text-center mb-6">
-                  Whether you're an innovator, organizer, or digital professional, discover new opportunities to grow your career with us!
+                  Whether you&apos;re an innovator, organizer, or digital professional, discover new opportunities to grow your career with us!
                 </p>
                 <a
                   href="/careers"

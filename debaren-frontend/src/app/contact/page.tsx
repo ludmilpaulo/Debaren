@@ -41,7 +41,7 @@ export default function ContactPage() {
       }
       setSent(true);
       setForm({ name: "", email: "", message: "" });
-    } catch (err) {
+    } catch {
       setError("Could not send your message. Please try again.");
     } finally {
       setLoading(false);

@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState, FormEvent } from "react";
 import {
-  getHeroSection, updateHeroSection, HeroSection,
+  getHeroSection, updateHeroSection,
 } from "@/services/contentService";
 
 const initialForm = {

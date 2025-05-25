@@ -9,7 +9,7 @@ export interface FooterSocialLink { id: number; platform: string; url: string; i
 export interface HeroSection { title: string; subtitle: string; cta_text: string; cta_url: string; }
 export interface ContactMessage { id: number; name: string; email: string; message: string; created_at: string; }
 
-const API_BASE_URL = baseAPI;
+
 // ------ Popup Venues ------
 export async function getPopupVenues(): Promise<PopupVenue[]> {
   const { data } = await axios.get(`${baseAPI}/api/popup-venues/`);

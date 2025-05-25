@@ -2,7 +2,7 @@
 import React, { useEffect, useState, FormEvent } from "react";
 import Image from "next/image";
 import {
-  getAbout, updateAbout, About,
+  getAbout, updateAbout,
 } from "@/services/contentService";
 
 const initialForm = {

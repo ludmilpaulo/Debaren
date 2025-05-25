@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import { JobApplication } from '@/types/Career';
 import { baseAPI } from '@/utils/variables';
@@ -23,7 +23,8 @@ export default function ViewApplications() {
     'submitted', 'processing', 'review', 'approved', 'rejected',
   ];
 
-  const fetchApplications = async () => {
+  // FIX: Define fetchApplications outside useEffect and memoize with useCallback
+  const fetchApplications = useCallback(async () => {
     setLoading(true);
     try {
       const res = await axios.get(`${baseAPI}/careers/job-applications/?page=${page}`);
@@ -38,11 +39,11 @@ export default function ViewApplications() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [page]);
 
   useEffect(() => {
     fetchApplications();
-  }, [page]);
+  }, [fetchApplications]);
 
   const updateStatus = async (id: number, status: JobApplication['status']) => {
     setLoading(true);
@@ -52,7 +53,7 @@ export default function ViewApplications() {
       await axios.patch(`${baseAPI}/careers/job-applications/${id}/`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
-      fetchApplications();
+      fetchApplications(); // Now accessible!
     } catch (error) {
       console.error('Error updating status:', error);
     } finally {

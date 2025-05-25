@@ -1,8 +1,7 @@
 "use client";
 import React from "react";
 import {
-  FiDatabase, FiMap, FiWifi, FiUsers, FiBook, FiInfo, FiMessageSquare, FiGlobe, FiHome
-} from "react-icons/fi";
+  FiDatabase, FiMap, FiUsers, FiBook} from "react-icons/fi";
 
 // The fixed interface
 export interface SidebarProps {
