@@ -107,17 +107,20 @@ export default function RootLayout({
   return (
     <html lang="en-ZA" className={`${geistSans.variable} ${geistMono.variable}`}>
       <head>
-        {/* JSON-LD Structured Data for SEO */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
-        {/* Add additional meta tags for SEO & social here if needed */}
       </head>
-      <body className="bg-slate-50 text-slate-800 font-sans">
+      <body
+        className="bg-slate-50 text-slate-800 font-sans"
+        suppressHydrationWarning
+      >
         <ReduxProvider>
           <Navbar />
-          <main className="min-h-screen px-4 md:px-12 py-8">{children}</main>
+          <main className="min-h-screen px-4 md:px-12 py-8">
+            {children}
+          </main>
           <Footer />
         </ReduxProvider>
       </body>
