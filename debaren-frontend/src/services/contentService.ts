@@ -174,7 +174,7 @@ export async function createVenue(data: VenueFormInput): Promise<Venue> {
         lat = geo.lat;
         lng = geo.lng;
       }
-    } catch (e) {
+    } catch {
       // fallback
     }
   }
@@ -223,7 +223,7 @@ export async function updateVenue(id: number, data: VenueFormInput): Promise<Ven
         lat = geo.lat;
         lng = geo.lng;
       }
-    } catch (e) {}
+    } catch  {}
   }
 
   const formData = new FormData();

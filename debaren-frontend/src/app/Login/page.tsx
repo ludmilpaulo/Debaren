@@ -7,7 +7,7 @@ import axios from "axios";
 import { Transition } from "@headlessui/react";
 import { useDispatch } from "react-redux";
 import { Eye, EyeOff } from "lucide-react";
-import { loginUser } from "@/redux/slices/authSlice";
+import { loginUser } from "@/services/authSlice";
 
 const Login = () => {
   const dispatch = useDispatch();

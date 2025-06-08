@@ -6,7 +6,8 @@ import Link from "next/link";
 import { Transition } from "@headlessui/react";
 import { useDispatch } from "react-redux";
 import { Eye, EyeOff } from "lucide-react";
-import { loginUser } from "@/redux/slices/authSlice";
+import { loginUser } from "@/services/authSlice";
+
 
 const SignUp = () => {
   const dispatch = useDispatch();
