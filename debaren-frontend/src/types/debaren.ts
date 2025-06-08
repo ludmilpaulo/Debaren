@@ -5,10 +5,54 @@ export type VenueType = 'country' | 'city' | 'town';
 export interface Venue {
   id: number;
   name: string;
-  venue_type: VenueType;
+  venue_type: string;
   description: string;
-  image: string | null;
+  image?: string;
+  address?: string;
+  city?: string;
+  region?: string;
+  country?: string;
+  postal_code?: string;
+  latitude?: number;
+  longitude?: number;
+  capacity?: number;
+  amenities?: string[];
+  price_per_day?: number;
+  contact_email?: string;
+  contact_phone?: string;
+  website?: string;
+  available?: boolean;
+  rating?: number;
+  tags?: string;
+  created_at?: string;
+  updated_at?: string;
 }
+
+
+
+export interface BookingForm {
+  customer_name: string;
+  customer_email: string;
+  customer_phone: string;
+  start_date: string;
+  end_date: string;
+  notes: string;
+}
+
+export interface Booking {
+  id: number;
+  venue_id: number;
+  customer_name: string;
+  customer_email: string;
+  customer_phone: string;
+  start_date: string;
+  end_date: string;
+  notes: string;
+  status: string;
+  created_at: string;
+  updated_at: string;
+}
+
 
 export interface PopupVenue {
   id: number;

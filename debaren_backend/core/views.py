@@ -1,14 +1,16 @@
 from rest_framework import viewsets, generics
+from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import status
 
 from rest_framework.generics import RetrieveAPIView
-from .models import Venue, PopupVenue, WifiSpot, SchoolProgram,About, FooterSocialLink, HeroSection
-from .serializers import VenueSerializer, PopupVenueSerializer, WifiSpotSerializer, SchoolProgramSerializer, AboutSerializer, FooterSocialLinkSerializer, HeroSectionSerializer
 
-class VenueViewSet(viewsets.ModelViewSet):
-    queryset = Venue.objects.all()
-    serializer_class = VenueSerializer
+from places.models import SchoolProgram, Venue, WifiSpot
+from .models import  PopupVenue, About, FooterSocialLink, HeroSection
+from .serializers import PopupVenueSerializer, WifiSpotSerializer, SchoolProgramSerializer, AboutSerializer, FooterSocialLinkSerializer, HeroSectionSerializer
+
+
+        
 
 class PopupVenueViewSet(viewsets.ModelViewSet):
     queryset = PopupVenue.objects.all()

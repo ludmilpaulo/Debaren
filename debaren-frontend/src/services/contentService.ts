@@ -1,5 +1,9 @@
+import { Venue } from "@/types/content";
 import { baseAPI } from "@/utils/variables";
 import axios from "axios";
+import { VenueFormInput } from "@/types/content";
+
+import { geocodeAddress } from "@/utils/geocode"; // Your Google Geocode function
 // ------ Types ------
 export interface PopupVenue { id: number; name: string; location: string; image: string; }
 export interface WifiSpot { id: number; name: string; address: string; }
@@ -127,43 +131,137 @@ export async function getContactMessages(): Promise<ContactMessage[]> {
 }
 
 // ------ Venue CRUD ------
-export interface Venue {
-  id: number;
-  name: string;
-  venue_type: VenueType;
-  description: string;
-  image: string; // path or URL
-}
-export type VenueType = "country" | "city" | "town";
+// In @/types/content.ts or wherever you keep your types
+
+
+// contentService.ts
+
+
+
+
+
+
+
+// src/services/contentService.ts
+
 
 export async function getVenues(): Promise<Venue[]> {
   const { data } = await axios.get(`${baseAPI}/api/venues/`);
   return data;
 }
 
-export async function createVenue(data: Omit<Venue, "id" | "image"> & { image?: File | null }): Promise<Venue> {
+// @/services/contentService.ts
+
+
+
+// Helper
+function parseAmenities(input: string): string[] {
+  return input
+    .split(/[\s,]+/)
+    .map((x) => x.trim())
+    .filter(Boolean);
+}
+
+export async function createVenue(data: VenueFormInput): Promise<Venue> {
+  let lat = data.latitude, lng = data.longitude;
+  console.log("Creating venue with data:", lat, lng);
+  // If latitude and longitude are not provided, try to geocode the address
+
+  if ((!lat || !lng) && data.address) {
+    try {
+      const geo = await geocodeAddress(data.address);
+      if (geo) {
+        lat = geo.lat;
+        lng = geo.lng;
+      }
+    } catch (e) {
+      // fallback
+    }
+  }
+
   const formData = new FormData();
   formData.append("name", data.name);
   formData.append("venue_type", data.venue_type);
   formData.append("description", data.description);
+  formData.append("address", data.address);
+  formData.append("city", data.city);
+  formData.append("region", data.region);
+  formData.append("country", data.country);
+  formData.append("postal_code", data.postal_code);
+  formData.append("latitude", lat ? String(lat) : "0");
+  formData.append("longitude", lng ? String(lng) : "0");
+  formData.append("capacity", String(data.capacity));
+
+  // 💡 ALWAYS send amenities as JSON array string
+  const amenitiesJSON = JSON.stringify(parseAmenities(String(data.amenities || "")));
+  formData.append("amenities", amenitiesJSON);
+
+  if (data.price_per_day) formData.append("price_per_day", String(data.price_per_day));
+  if (data.contact_email) formData.append("contact_email", data.contact_email);
+  if (data.contact_phone) formData.append("contact_phone", data.contact_phone);
+  if (data.website) formData.append("website", data.website);
+  formData.append("available", data.available ? "true" : "false");
+  formData.append("rating", String(Number(data.rating)));
+  formData.append("tags", data.tags ?? "");
   if (data.image) formData.append("image", data.image);
+
+  if (data.gallery && data.gallery.length > 0) {
+    data.gallery.forEach((file) => formData.append("gallery_upload", file));
+  }
   const res = await axios.post(`${baseAPI}/api/venues/`, formData, {
     headers: { "Content-Type": "multipart/form-data" },
   });
   return res.data;
 }
 
-export async function updateVenue(id: number, data: Omit<Venue, "id" | "image"> & { image?: File | null }): Promise<Venue> {
+export async function updateVenue(id: number, data: VenueFormInput): Promise<Venue> {
+  let lat = data.latitude, lng = data.longitude;
+  if ((!lat || !lng) && data.address) {
+    try {
+      const geo = await geocodeAddress(data.address);
+      if (geo) {
+        lat = geo.lat;
+        lng = geo.lng;
+      }
+    } catch (e) {}
+  }
+
   const formData = new FormData();
   formData.append("name", data.name);
   formData.append("venue_type", data.venue_type);
   formData.append("description", data.description);
+  formData.append("address", data.address);
+  formData.append("city", data.city);
+  formData.append("region", data.region);
+  formData.append("country", data.country);
+  formData.append("postal_code", data.postal_code);
+  formData.append("latitude", lat ? String(lat) : "0");
+  formData.append("longitude", lng ? String(lng) : "0");
+  formData.append("capacity", String(Number(data.capacity)));
+
+  // 💡 Use the same helper for amenities!
+  const amenitiesJSON = JSON.stringify(parseAmenities(String(data.amenities || "")));
+  formData.append("amenities", amenitiesJSON);
+
+  if (data.price_per_day) formData.append("price_per_day", String(data.price_per_day));
+  if (data.contact_email) formData.append("contact_email", data.contact_email);
+  if (data.contact_phone) formData.append("contact_phone", data.contact_phone);
+  if (data.website) formData.append("website", data.website);
+  formData.append("available", data.available ? "true" : "false");
+  formData.append("rating", String(Number(data.rating)));
+  formData.append("tags", data.tags ?? "");
   if (data.image) formData.append("image", data.image);
+
+  if (data.gallery && data.gallery.length > 0) {
+    data.gallery.forEach((file) => formData.append("gallery_upload", file));
+  }
   const res = await axios.put(`${baseAPI}/api/venues/${id}/`, formData, {
     headers: { "Content-Type": "multipart/form-data" },
   });
   return res.data;
 }
+
+
 
 export async function deleteVenue(id: number): Promise<void> {
   await axios.delete(`${baseAPI}/api/venues/${id}/`);

@@ -24,14 +24,7 @@ const AdminDashboard: React.FC = () => {
   const renderComponent = () => {
     switch (activeComponent) {
       case "contentManager":
-      case "venues":
-      case "popupVenues":
-      case "wifiSpots":
-      case "schoolPrograms":
-      case "about":
-      case "socialLinks":
-      case "heroSection":
-      case "contactMessages":
+     
         // All these tabs are managed via ContentManager (with its own tabs)
         return <ContentManager initialTab={activeComponent} />;
       case "bookings":

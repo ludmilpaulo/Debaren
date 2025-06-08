@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <body style="font-family:Arial,sans-serif;background:#faf6f1;padding:30px;">
+    <div style="max-width:540px;margin:auto;background:#fff;border-radius:14px;box-shadow:0 2px 12px #facc15;padding:28px;">
+      <h2 style="color:#facc15;margin-bottom:8px;">Debaren Booking Confirmed!</h2>
+      <p style="color:#222;">Hi {{ user.username }},<br>
+      Your booking is confirmed:</p>
+      <ul style="color:#1d3557;">
+        <li><b>Venue:</b> {{ venue.name }}</li>
+        <li><b>Booking Dates:</b> {{ booking.start_date }} - {{ booking.end_date }}</li>
+      </ul>
+      <p style="color:#222;">You can <a href="{{ change_pw_url }}" style="color:#2196f3;">change your password here</a> any time and view your bookings in your dashboard.</p>
+      <div style="margin-top:18px;color:#999;font-size:14px;">Thank you,<br>Debaren Team</div>
+    </div>
+  </body>
+</html>

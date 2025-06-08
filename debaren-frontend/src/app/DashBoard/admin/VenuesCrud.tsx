@@ -1,37 +1,70 @@
 "use client";
-import React, { useState, useEffect, FormEvent } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import {
-  getVenues,
   createVenue,
   updateVenue,
   deleteVenue,
-  Venue,
-  VenueType,
+  getVenues,
 } from "@/services/contentService";
+import { Venue, VenueFormInput, VenueType } from "@/types/content";
+import { geocodeAddress } from "@/utils/geocode";
+import { DragDropContext, Droppable, Draggable, DropResult } from "@hello-pangea/dnd";
 
 const VENUE_TYPE_LABELS: Record<VenueType, string> = {
   country: "Country",
   city: "City",
   town: "Town",
+  hall: "Hall",
+  conference: "Conference Center",
+  restaurant: "Restaurant",
+  outdoor: "Outdoor",
+  auditorium: "Auditorium",
+  other: "Other",
 };
 
-const initialForm = {
+const initialForm: VenueFormInput = {
   name: "",
-  venue_type: "country" as VenueType,
+  venue_type: "country",
   description: "",
-  image: null as File | null,
+  address: "",
+  city: "",
+  region: "",
+  country: "South Africa",
+  postal_code: "",
+  capacity: 0,
+  amenities: "",
+  price_per_day: "",
+  contact_email: "",
+  contact_phone: "",
+  website: "",
+  available: true,
+  rating: 0,
+  tags: "",
+  image: null,
+  gallery: [],
+  latitude: "",
+  longitude: "",
 };
 
-export default function VenuesCrud() {
+function parseAmenities(input: string): string[] {
+  // Split by comma or whitespace, trim, remove empties
+  return input
+    .split(/[\s,]+/)
+    .map((x) => x.trim())
+    .filter(Boolean);
+}
+
+export default function VenueCRUD() {
   const [venues, setVenues] = useState<Venue[]>([]);
-  const [form, setForm] = useState(initialForm);
+  const [form, setForm] = useState<VenueFormInput>(initialForm);
   const [editId, setEditId] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
+  const [galleryPreviews, setGalleryPreviews] = useState<string[]>([]);
   const [error, setError] = useState<string>("");
 
-  // Fetch venues
+  // Fetch venues on mount
   useEffect(() => {
     fetchVenues();
   }, []);
@@ -48,26 +81,106 @@ export default function VenuesCrud() {
     }
   }
 
+  function handleInputChange(
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+  ) {
+    const { name, value, type } = e.target;
+    let v: any = value;
+    if (type === "checkbox") v = (e.target as HTMLInputElement).checked;
+    setForm((f) => ({ ...f, [name]: v }));
+  }
+
+  // Main image
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0] || null;
     setForm((f) => ({ ...f, image: file }));
     setPreview(file ? URL.createObjectURL(file) : null);
   }
 
-  function handleInputChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) {
-    const { name, value } = e.target;
-    setForm((f) => ({ ...f, [name]: value }));
+  // Gallery
+  function handleGalleryChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const files = e.target.files;
+    if (!files) return;
+    setForm((prev) => ({
+      ...prev,
+      gallery: Array.from(files),
+    }));
+    setGalleryPreviews(Array.from(files).map((f) => URL.createObjectURL(f)));
+  }
+
+  function removeGalleryImage(idx: number) {
+    setForm((f) => ({
+      ...f,
+      gallery: (f.gallery || []).filter((_, i) => i !== idx),
+    }));
+    setGalleryPreviews((p) => p.filter((_, i) => i !== idx));
+  }
+
+  function onDragEnd(result: DropResult) {
+    if (!result.destination) return;
+    const galleryFiles = form.gallery ? Array.from(form.gallery) : [];
+    const galleryPrevs = Array.from(galleryPreviews);
+    const [removedFile] = galleryFiles.splice(result.source.index, 1);
+    const [removedPrev] = galleryPrevs.splice(result.source.index, 1);
+    galleryFiles.splice(result.destination.index, 0, removedFile);
+    galleryPrevs.splice(result.destination.index, 0, removedPrev);
+    setForm((f) => ({ ...f, gallery: galleryFiles }));
+    setGalleryPreviews(galleryPrevs);
+  }
+
+  function validateForm() {
+    if (!form.name || !form.venue_type || !form.description || !form.address) {
+      setError("Name, type, description, and address are required.");
+      return false;
+    }
+    return true;
+  }
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setError("");
+    if (!validateForm()) return;
+    setLoading(true);
+    try {
+      // Geocode address (lat/lng)
+      const geo = await geocodeAddress(form.address);
+      // Parse/clean amenities
+      const amenitiesArray = parseAmenities(form.amenities as string);
+      const submitForm: VenueFormInput = {
+        ...form,
+        amenities: amenitiesArray.join(","),
+        latitude: geo?.lat || "",
+        longitude: geo?.lng || "",
+      };
+      if (editId) {
+        await updateVenue(editId, submitForm);
+      } else {
+        await createVenue(submitForm);
+      }
+      setEditId(null);
+      setForm(initialForm);
+      setPreview(null);
+      setGalleryPreviews([]);
+      await fetchVenues();
+    } catch {
+      setError("Submission failed. Please check your inputs.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   function handleEdit(venue: Venue) {
     setEditId(venue.id);
     setForm({
-      name: venue.name,
-      venue_type: venue.venue_type,
-      description: venue.description,
+      ...venue,
+      amenities: Array.isArray(venue.amenities)
+        ? venue.amenities.join(", ")
+        : venue.amenities ?? "",
       image: null,
+      gallery: [],
     });
     setPreview(venue.image || null);
+    setGalleryPreviews(venue.gallery ? venue.gallery.map((g) => g.image) : []);
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
@@ -84,34 +197,14 @@ export default function VenuesCrud() {
     }
   }
 
-  async function handleSubmit(e: FormEvent) {
-    e.preventDefault();
-    setLoading(true);
-    setError("");
-    try {
-      if (editId) {
-        const updated = await updateVenue(editId, form);
-        setVenues((v) => v.map((venue) => (venue.id === editId ? updated : venue)));
-        setEditId(null);
-      } else {
-        const created = await createVenue(form);
-        setVenues((v) => [created, ...v]);
-      }
-      setForm(initialForm);
-      setPreview(null);
-    } catch {
-      setError("Submission failed. Please check your inputs.");
-    } finally {
-      setLoading(false);
-    }
-  }
-
   function handleCancelEdit() {
     setEditId(null);
     setForm(initialForm);
     setPreview(null);
+    setGalleryPreviews([]);
   }
 
+  // --- RENDER ---
   return (
     <div className="space-y-10">
       <form
@@ -155,18 +248,196 @@ export default function VenuesCrud() {
           />
           <input
             className="border rounded p-2"
-            type="file"
-            accept="image/*"
-            onChange={handleFileChange}
+            type="text"
+            name="address"
+            placeholder="Venue Address"
+            value={form.address}
+            onChange={handleInputChange}
+            required
           />
+          <input
+            className="border rounded p-2"
+            type="text"
+            name="city"
+            placeholder="City"
+            value={form.city}
+            onChange={handleInputChange}
+          />
+          <input
+            className="border rounded p-2"
+            type="text"
+            name="region"
+            placeholder="Region"
+            value={form.region}
+            onChange={handleInputChange}
+          />
+          <input
+            className="border rounded p-2"
+            type="text"
+            name="country"
+            placeholder="Country"
+            value={form.country}
+            onChange={handleInputChange}
+          />
+          <input
+            className="border rounded p-2"
+            type="text"
+            name="postal_code"
+            placeholder="Postal Code"
+            value={form.postal_code}
+            onChange={handleInputChange}
+          />
+          <input
+            className="border rounded p-2"
+            type="number"
+            name="capacity"
+            placeholder="Capacity"
+            value={form.capacity}
+            onChange={handleInputChange}
+            min={0}
+          />
+          <input
+            className="border rounded p-2"
+            type="text"
+            name="amenities"
+            placeholder="Amenities (comma or space separated)"
+            value={form.amenities}
+            onChange={handleInputChange}
+          />
+          {/* Chip preview */}
+          {parseAmenities(form.amenities as string).length > 0 && (
+            <div className="flex gap-2 flex-wrap">
+              {parseAmenities(form.amenities as string).map((am, idx) => (
+                <span
+                  key={idx}
+                  className="px-2 py-1 bg-gray-100 border border-gray-300 rounded-full text-xs"
+                >
+                  {am}
+                </span>
+              ))}
+            </div>
+          )}
+          <input
+            className="border rounded p-2"
+            type="text"
+            name="price_per_day"
+            placeholder="Price Per Day"
+            value={form.price_per_day}
+            onChange={handleInputChange}
+          />
+          <input
+            className="border rounded p-2"
+            type="email"
+            name="contact_email"
+            placeholder="Contact Email"
+            value={form.contact_email}
+            onChange={handleInputChange}
+          />
+          <input
+            className="border rounded p-2"
+            type="text"
+            name="contact_phone"
+            placeholder="Contact Phone"
+            value={form.contact_phone}
+            onChange={handleInputChange}
+          />
+          <input
+            className="border rounded p-2"
+            type="text"
+            name="website"
+            placeholder="Website"
+            value={form.website}
+            onChange={handleInputChange}
+          />
+          <label className="inline-flex items-center">
+            <input
+              type="checkbox"
+              name="available"
+              checked={form.available}
+              onChange={handleInputChange}
+              className="mr-2"
+            />
+            Available
+          </label>
+          <input
+            className="border rounded p-2"
+            type="text"
+            name="rating"
+            placeholder="Rating"
+            value={form.rating}
+            onChange={handleInputChange}
+          />
+          <input
+            className="border rounded p-2"
+            type="text"
+            name="tags"
+            placeholder="Tags (comma separated)"
+            value={form.tags}
+            onChange={handleInputChange}
+          />
+
+          {/* Main image */}
+          <input className="border rounded p-2" type="file" accept="image/*" onChange={handleFileChange} />
           {preview && (
             <Image
-              src={preview.startsWith("http") ? preview : `/media/${preview}`}
-              alt="Preview"
+              src={preview.startsWith("blob") ? preview : preview}
+              alt="Main"
               width={180}
               height={120}
               className="rounded mt-2"
             />
+          )}
+
+          {/* Gallery multiple images with drag & drop */}
+          <input
+            className="border rounded p-2"
+            type="file"
+            accept="image/*"
+            multiple
+            onChange={handleGalleryChange}
+          />
+
+          {galleryPreviews.length > 0 && (
+            <DragDropContext onDragEnd={onDragEnd}>
+              <Droppable droppableId="gallery">
+                {(provided) => (
+                  <div
+                    ref={provided.innerRef}
+                    {...provided.droppableProps}
+                    className="flex gap-2 mt-2 flex-wrap"
+                  >
+                    {galleryPreviews.map((url, idx) => (
+                      <Draggable key={idx} draggableId={String(idx)} index={idx}>
+                        {(prov) => (
+                          <div
+                            ref={prov.innerRef}
+                            {...prov.draggableProps}
+                            {...prov.dragHandleProps}
+                            className="relative"
+                          >
+                            <Image
+                              src={url}
+                              alt={`Gallery ${idx}`}
+                              width={80}
+                              height={60}
+                              className="rounded border"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => removeGalleryImage(idx)}
+                              className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center"
+                            >
+                              ×
+                            </button>
+                          </div>
+                        )}
+                      </Draggable>
+                    ))}
+                    {provided.placeholder}
+                  </div>
+                )}
+              </Droppable>
+            </DragDropContext>
           )}
         </div>
         <div className="mt-4 flex gap-3">
@@ -212,11 +483,7 @@ export default function VenuesCrud() {
                   <td className="py-2 pr-2">
                     {venue.image ? (
                       <Image
-                        src={
-                          venue.image.startsWith("http")
-                            ? venue.image
-                            : `/media/${venue.image}`
-                        }
+                        src={venue.image.startsWith("http") ? venue.image : `/media/${venue.image}`}
                         alt={venue.name}
                         width={64}
                         height={48}

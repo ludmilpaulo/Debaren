@@ -1,18 +1,5 @@
 from django.db import models
 
-class Venue(models.Model):
-    VENUE_TYPE_CHOICES = [
-        ('country', 'Country'),
-        ('city', 'City'),
-        ('town', 'Town'),
-    ]
-    name = models.CharField(max_length=200)
-    venue_type = models.CharField(max_length=20, choices=VENUE_TYPE_CHOICES)
-    description = models.TextField(blank=True)
-    image = models.ImageField(upload_to='venues/', blank=True)
-
-    def __str__(self):
-        return f"{self.name} ({self.venue_type})"
 
 class PopupVenue(models.Model):
     name = models.CharField(max_length=200)
@@ -22,20 +9,8 @@ class PopupVenue(models.Model):
     def __str__(self):
         return self.name
 
-class WifiSpot(models.Model):
-    name = models.CharField(max_length=200)
-    address = models.TextField()
 
-    def __str__(self):
-        return self.name
 
-class SchoolProgram(models.Model):
-    name = models.CharField(max_length=200)
-    description = models.TextField()
-    image = models.ImageField(upload_to='school/', blank=True)
-
-    def __str__(self):
-        return self.name
     
     
     

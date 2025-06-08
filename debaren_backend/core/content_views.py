@@ -1,11 +1,14 @@
 from rest_framework import viewsets, mixins
 from rest_framework.parsers import MultiPartParser, FormParser
+
+from places.serializers import VenueSerializer
+from places.models import SchoolProgram, Venue, WifiSpot
 from .models import (
-    Venue, PopupVenue, WifiSpot, SchoolProgram, About,
+    PopupVenue, About,
     FooterSocialLink, HeroSection, ContactMessage
 )
 from .serializers import (
-    VenueSerializer, PopupVenueSerializer, WifiSpotSerializer,
+    PopupVenueSerializer, WifiSpotSerializer,
     SchoolProgramSerializer, AboutSerializer, FooterSocialLinkSerializer,
     HeroSectionSerializer, ContactMessageSerializer
 )

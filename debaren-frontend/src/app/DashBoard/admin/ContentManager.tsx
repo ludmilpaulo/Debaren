@@ -29,7 +29,7 @@ export interface ContentManagerProps {
 // Define all tabs (order matters!)
 const tabs = [
   { id: "venues", name: "Venues", icon: <FiMap />, component: <VenuesCrud /> },
-  { id: "popupVenues", name: "Popup Venues", icon: <FiGlobe />, component: <PopupVenuesCrud /> },
+
   { id: "wifiSpots", name: "WiFi Spots", icon: <FiWifi />, component: <WifiSpotsCrud /> },
   { id: "schoolPrograms", name: "School Programs", icon: <FiBook />, component: <SchoolProgramsCrud /> },
   { id: "about", name: "About Info", icon: <FiInfo />, component: <AboutCrud /> },

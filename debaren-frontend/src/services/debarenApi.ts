@@ -8,11 +8,14 @@ import type {
   About,
   FooterSocialLink,
   VenueType,
-} from "@/types/debaren";
+  Booking,
+  BookingForm,
+} from "@/types/debaren"; // Add Booking and BookingForm to your types!
+import { baseAPI } from "@/utils/variables";
 
 export const debarenApi = createApi({
   reducerPath: "debarenApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "https://debaren.pythonanywhere.com/api/" }),
+  baseQuery: fetchBaseQuery({ baseUrl: `${baseAPI}/api/` }),
   endpoints: (builder) => ({
     getVenues: builder.query<Venue[], void>({ query: () => "venues/" }),
     getVenuesByType: builder.query<Venue[], VenueType>({
@@ -34,13 +37,22 @@ export const debarenApi = createApi({
       query: () => "footer-social-links/",
     }),
     getHero: builder.query<{
-  title: string;
-  subtitle: string;
-  cta_text: string;
-  cta_url: string;
-}, void>({
-  query: () => "hero/",
-}),
+      title: string;
+      subtitle: string;
+      cta_text: string;
+      cta_url: string;
+    }, void>({
+      query: () => "hero/",
+    }),
+    /** --- Booking Mutation for Venue (and generic use) --- */
+    bookVenue: builder.mutation<Booking, { venue_id: number } & BookingForm>({
+      query: (data) => ({
+        url: "bookings/",
+        method: "POST",
+        body: data,
+      }),
+    }),
+    // You can add other booking mutations here for wifi_id, school_program_id, etc. if needed
   }),
 });
 
@@ -53,4 +65,5 @@ export const {
   useGetAboutQuery,
   useGetFooterSocialLinksQuery,
   useGetHeroQuery,
+  useBookVenueMutation, // <-- Make sure THIS is exported!
 } = debarenApi;

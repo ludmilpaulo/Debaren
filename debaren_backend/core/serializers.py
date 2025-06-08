@@ -1,11 +1,10 @@
 from rest_framework import serializers
-from .models import Venue, PopupVenue, WifiSpot, SchoolProgram, About, FooterSocialLink, HeroSection, ContactMessage
+
+from places.models import SchoolProgram, Venue, WifiSpot
+from .models import PopupVenue, About, FooterSocialLink, HeroSection, ContactMessage
 
 
-class VenueSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Venue
-        fields = '__all__'
+
 
 class PopupVenueSerializer(serializers.ModelSerializer):
     class Meta:
