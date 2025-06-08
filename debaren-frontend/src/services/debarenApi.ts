@@ -45,6 +45,7 @@ export const debarenApi = createApi({
       query: () => "hero/",
     }),
     /** --- Booking Mutation for Venue (and generic use) --- */
+        // ...existing endpoints...
     bookVenue: builder.mutation<Booking, { venue_id: number } & BookingForm>({
       query: (data) => ({
         url: "bookings/",
@@ -52,7 +53,11 @@ export const debarenApi = createApi({
         body: data,
       }),
     }),
-    // You can add other booking mutations here for wifi_id, school_program_id, etc. if needed
+    /** --- Get Bookings for Current User --- */
+    getUserBookings: builder.query<Booking[], number>({
+      query: (userId) => `bookings/?user_id=${userId}`,
+    }),
+
   }),
 });
 
@@ -65,5 +70,6 @@ export const {
   useGetAboutQuery,
   useGetFooterSocialLinksQuery,
   useGetHeroQuery,
+   useGetUserBookingsQuery, 
   useBookVenueMutation, // <-- Make sure THIS is exported!
 } = debarenApi;

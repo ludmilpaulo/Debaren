@@ -85,7 +85,7 @@ export default function VenueCRUD() {
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) {
     const { name, value, type } = e.target;
-    let v: any = value;
+    let v: string | boolean = value;
     if (type === "checkbox") v = (e.target as HTMLInputElement).checked;
     setForm((f) => ({ ...f, [name]: v }));
   }

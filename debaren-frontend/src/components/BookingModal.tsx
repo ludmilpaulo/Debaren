@@ -2,14 +2,23 @@
 import React, { useState, useEffect } from "react";
 import { Transition } from "@headlessui/react";
 import { FaUser, FaEnvelope, FaPhone, FaCalendarAlt, FaStickyNote } from "react-icons/fa";
-import { DateRange } from "react-date-range";
+import { DateRange, Range, RangeKeyDict } from "react-date-range";
 import { addDays, format } from "date-fns";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
-import type { Venue, BookingForm } from "@/types/debaren";
+import type { BookingForm, Venue } from "@/types/debaren";
 
-// Props: isOpen, onClose, onSubmit, venue, submitting, success, error
-export const BookingModal: React.FC<any> = ({
+interface BookingModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onSubmit: (form: BookingForm) => Promise<void>;
+  venue?: Venue;
+  submitting: boolean;
+  success?: boolean;
+  error?: string | null;
+}
+
+export const BookingModal: React.FC<BookingModalProps> = ({
   isOpen,
   onClose,
   onSubmit,
@@ -28,7 +37,7 @@ export const BookingModal: React.FC<any> = ({
   });
 
   // Date range picker state
-  const [range, setRange] = useState<any>([
+  const [range, setRange] = useState<Range[]>([
     {
       startDate: new Date(),
       endDate: addDays(new Date(), 1),
@@ -62,13 +71,13 @@ export const BookingModal: React.FC<any> = ({
   };
 
   // Handle range selection
-  const handleSelect = (ranges: any) => {
+  const handleSelect = (ranges: RangeKeyDict) => {
     const sel = ranges.selection;
     setRange([sel]);
     setForm({
       ...form,
-      start_date: format(sel.startDate, "yyyy-MM-dd"),
-      end_date: format(sel.endDate, "yyyy-MM-dd"),
+      start_date: sel.startDate ? format(sel.startDate, "yyyy-MM-dd") : "",
+      end_date: sel.endDate ? format(sel.endDate, "yyyy-MM-dd") : "",
     });
     setShowDatePicker(false);
   };
@@ -94,7 +103,6 @@ export const BookingModal: React.FC<any> = ({
             Book: {venue?.name}
           </h3>
           <form onSubmit={handleSubmit} className="space-y-4 mt-4">
-
             {/* Name & Email */}
             <div className="flex flex-col sm:flex-row gap-3">
               <div className="relative flex-1">
@@ -125,7 +133,6 @@ export const BookingModal: React.FC<any> = ({
                 <label className="absolute left-10 -top-3 text-xs bg-white px-1 text-yellow-600 peer-focus:text-yellow-700 transition">Email</label>
               </div>
             </div>
-            
             {/* Phone */}
             <div className="relative">
               <FaPhone className="absolute left-3 top-3 text-yellow-500" />
@@ -138,7 +145,6 @@ export const BookingModal: React.FC<any> = ({
               />
               <label className="absolute left-10 -top-3 text-xs bg-white px-1 text-yellow-600 peer-focus:text-yellow-700 transition">Phone</label>
             </div>
-
             {/* Date Range Picker */}
             <div>
               <div
@@ -176,15 +182,13 @@ export const BookingModal: React.FC<any> = ({
               {/* Date picker dropdown */}
               {showDatePicker && (
                 <div className="absolute z-50 left-0 right-0 mt-2 mx-auto">
-                    <DateRange
-                        ranges={range}
-                        onChange={handleSelect}
-                        rangeColors={["#facc15"]}
-                        minDate={new Date()}
-                        moveRangeOnFirstSelection={false}
-                        />
-
-
+                  <DateRange
+                    ranges={range}
+                    onChange={handleSelect}
+                    rangeColors={["#facc15"]}
+                    minDate={new Date()}
+                    moveRangeOnFirstSelection={false}
+                  />
                   <button
                     type="button"
                     className="mt-2 px-3 py-2 bg-yellow-500 text-white font-bold rounded hover:bg-yellow-600"
@@ -195,7 +199,6 @@ export const BookingModal: React.FC<any> = ({
                 </div>
               )}
             </div>
-
             {/* Notes */}
             <div className="relative">
               <FaStickyNote className="absolute left-3 top-3 text-yellow-500" />
@@ -209,7 +212,6 @@ export const BookingModal: React.FC<any> = ({
               />
               <label className="absolute left-10 -top-3 text-xs bg-white px-1 text-yellow-600 peer-focus:text-yellow-700 transition">Notes</label>
             </div>
-
             {/* Actions */}
             <div className="flex gap-4 pt-2">
               <button

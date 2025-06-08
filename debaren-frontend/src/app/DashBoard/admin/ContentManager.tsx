@@ -3,7 +3,6 @@ import React from "react";
 import { Tab } from "@headlessui/react";
 import {
   FiMap,
-  FiGlobe,
   FiWifi,
   FiBook,
   FiInfo,
@@ -12,7 +11,6 @@ import {
   FiMessageSquare,
 } from "react-icons/fi";
 import VenuesCrud from "./VenuesCrud";
-import PopupVenuesCrud from "./PopupVenuesCrud";
 import WifiSpotsCrud from "./WifiSpotsCrud";
 import SchoolProgramsCrud from "./SchoolProgramsCrud";
 import AboutCrud from "./AboutCrud";

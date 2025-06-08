@@ -43,7 +43,7 @@ export default function VenueDetailPage() {
   // Booking handler
  const handleBookingSubmit = async (form: BookingForm) => {
   if (!venue) return;
-  await bookVenue({ ...form, venue: venue.id });
+  await bookVenue({ ...form, venue_id: venue.id });
 };
 
   if (!venue)
