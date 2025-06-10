@@ -1,84 +1,13 @@
 [
   {
-    "model": "core.venue",
+    "model": "core.homepage",
     "pk": 1,
     "fields": {
-      "name": "Cape Town Conference Centre",
-      "venue_type": "city",
-      "description": "A state-of-the-art conference venue in the heart of Cape Town, ideal for events, exhibitions, and corporate meetings.",
-      "image": ""
-    }
-  },
-  {
-    "model": "core.venue",
-    "pk": 2,
-    "fields": {
-      "name": "Johannesburg Country Estate",
-      "venue_type": "country",
-      "description": "A serene estate surrounded by nature, perfect for retreats, weddings, and executive getaways.",
-      "image": ""
-    }
-  },
-  {
-    "model": "core.venue",
-    "pk": 3,
-    "fields": {
-      "name": "Stellenbosch Town Hall",
-      "venue_type": "town",
-      "description": "Historic town hall venue with modern amenities, ideal for community gatherings and small-scale conferences.",
-      "image": ""
-    }
-  },
-  {
-    "model": "core.popupvenue",
-    "pk": 1,
-    "fields": {
-      "name": "PopUp Studio Sandton",
-      "location": "Sandton, Johannesburg",
-      "image": ""
-    }
-  },
-  {
-    "model": "core.popupvenue",
-    "pk": 2,
-    "fields": {
-      "name": "Urban Market Space",
-      "location": "Woodstock, Cape Town",
-      "image": ""
-    }
-  },
-  {
-    "model": "core.wifispot",
-    "pk": 1,
-    "fields": {
-      "name": "TechHub Coffee Bar",
-      "address": "101 Loop Street, Cape Town"
-    }
-  },
-  {
-    "model": "core.wifispot",
-    "pk": 2,
-    "fields": {
-      "name": "The Creative Lounge",
-      "address": "15 Rivonia Rd, Johannesburg"
-    }
-  },
-  {
-    "model": "core.schoolprogram",
-    "pk": 1,
-    "fields": {
-      "name": "Creative Coding Bootcamp",
-      "description": "An immersive 8-week program focused on web and mobile development skills for all ages.",
-      "image": ""
-    }
-  },
-  {
-    "model": "core.schoolprogram",
-    "pk": 2,
-    "fields": {
-      "name": "Business Leadership Academy",
-      "description": "A weekend school designed to empower future leaders with entrepreneurial skills and practical business insights.",
-      "image": ""
+      "title": "Welcome to Debaren",
+      "subtitle": "Discover Unique Spaces for Every Occasion",
+      "description": "Explore our curated selection of venues, pop-up spaces, and WiFi-friendly locations designed to inspire creativity and connection.",
+      "image": "",
+      "updated_at": "2024-05-24T00:00:00Z"
     }
   },
   {

@@ -1,0 +1,41 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Django SQLite database
+db.sqlite3
+
+# Ignore Django migrations (keep __init__.py to preserve the package)
+**/migrations/*.py
+!**/migrations/__init__.py
+**/migrations/*.pyc
+
+# Environment variables & settings
+.env
+*.env
+
+# VS Code settings (optional)
+.vscode/
+
+# macOS & system files
+.DS_Store
+
+# Python virtual environment
+venv/
+.env/
+ENV/
+env/
+.venv/
+
+# IDEs
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Logs
+*.log
+
+# Media & static (optional: uncomment if needed)
+# media/
+# staticfiles/
