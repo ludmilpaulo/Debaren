@@ -79,9 +79,13 @@ export default function Navbar() {
             animate={{ x: 0 }}
             exit={{ x: "-100%" }}
             transition={{ type: "spring", stiffness: 400, damping: 36 }}
-            className="fixed inset-y-0 left-0 w-72 max-w-full bg-white shadow-2xl z-50 border-r border-yellow-200 flex flex-col"
+            className="fixed inset-y-0 left-0 w-72 max-w-full bg-white shadow-2xl z-50 border-r border-yellow-200 
+            bg-gradient-to-t from-yellow-100 via-white to-white shadow-inner
+            flex flex-col"
           >
-            <div className="flex items-center justify-between px-7 py-5 border-b border-yellow-100">
+            <div className="flex items-center justify-between px-7 py-5 border-b border-yellow-100
+            bg-gradient-to-t from-yellow-100 via-white to-white shadow-inner
+            ">
               <span className="flex items-center gap-2">
                 <span className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-gradient-to-tr from-yellow-400 via-yellow-300 to-yellow-500 shadow-inner">
                   <span className="text-xl font-bold text-white">D</span>
@@ -96,7 +100,9 @@ export default function Navbar() {
                 <HiX size={28} />
               </button>
             </div>
-            <nav className="flex-1 px-4 pt-7">
+            <nav className="flex-1 px-4 pt-7
+            bg-gradient-to-t from-yellow-100 via-white to-white shadow-inner
+            ">
               <ul className="flex flex-col gap-7">
                 {navItems.map(({ label, href, icon: Icon }) => (
                   <li key={href}>
