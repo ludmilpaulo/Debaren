@@ -6,7 +6,8 @@ import { DateRange, Range, RangeKeyDict } from "react-date-range";
 import { addDays, format } from "date-fns";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
-import type { BookingForm, Venue } from "@/types/debaren";
+import type { BookingForm } from "@/types/debaren";
+import { Venue } from "@/types/content";
 
 interface BookingModalProps {
   isOpen: boolean;
