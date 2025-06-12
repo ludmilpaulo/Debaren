@@ -2,31 +2,6 @@
 
 export type VenueType = 'country' | 'city' | 'town';
 
-export interface Venue {
-  id: number;
-  name: string;
-  venue_type: string;
-  description: string;
-  image?: string;
-  address?: string;
-  city?: string;
-  region?: string;
-  country?: string;
-  postal_code?: string;
-  latitude?: number;
-  longitude?: number;
-  capacity?: number;
-  amenities?: string[];
-  price_per_day?: number;
-  contact_email?: string;
-  contact_phone?: string;
-  website?: string;
-  available?: boolean;
-  rating?: number;
-  tags?: string;
-  created_at?: string;
-  updated_at?: string;
-}
 
 
 

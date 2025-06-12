@@ -8,8 +8,9 @@ import {
   useGetPopupVenuesQuery,
   useGetSchoolProgramsQuery,
 } from "@/services/debarenApi";
-import type { Venue, PopupVenue, SchoolProgram } from "@/types/debaren";
+import type { PopupVenue, SchoolProgram } from "@/types/debaren";
 import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/solid";
+import { Venue } from "@/types/content";
 
 type SlideItem =
   | { id: number; title: string; description: string; image?: string; type: "Venue"; venue_type: Venue["venue_type"]; }

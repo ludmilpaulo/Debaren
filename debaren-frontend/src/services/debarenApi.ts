@@ -1,7 +1,7 @@
 // lib/services/debarenApi.ts
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import type {
-  Venue,
+ 
   PopupVenue,
   WifiSpot,
   SchoolProgram,
@@ -12,6 +12,7 @@ import type {
   BookingForm,
 } from "@/types/debaren"; // Add Booking and BookingForm to your types!
 import { baseAPI } from "@/utils/variables";
+import { Venue } from "@/types/content";
 
 export const debarenApi = createApi({
   reducerPath: "debarenApi",

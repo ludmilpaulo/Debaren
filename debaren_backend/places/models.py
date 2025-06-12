@@ -41,12 +41,14 @@ class Venue(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        verbose_name = "Venue"
-        verbose_name_plural = "Venues"
-        ordering = ['-created_at']
-
-    def __str__(self):
-        return f"{self.name} ({self.venue_type})"
+            verbose_name = "Venue"
+            verbose_name_plural = "Venues"
+            ordering = ['-created_at']
+            indexes = [
+                models.Index(fields=['city']),
+                models.Index(fields=['region']),
+                models.Index(fields=['country']),
+            ]
 
 # models.py
 class VenueGalleryImage(models.Model):

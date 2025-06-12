@@ -56,6 +56,8 @@ class FooterSocialLinkAdmin(admin.ModelAdmin):
     list_editable = ("order",)
     list_filter = ("platform",)
     ordering = ("order",)
+    list_display_links = ("platform",)  # <-- Add this line explicitly
+
 
 @admin.register(HeroSection)
 class HeroSectionAdmin(admin.ModelAdmin):
