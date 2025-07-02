@@ -49,14 +49,6 @@ class AboutAdmin(admin.ModelAdmin):
     image_tag.short_description = "Image"
     image_tag.allow_tags = True
 
-@admin.register(FooterSocialLink)
-class FooterSocialLinkAdmin(admin.ModelAdmin):
-    list_display = ("order", "platform", "url", "icon")
-    search_fields = ("platform", "url", "icon")
-    list_editable = ("order",)
-    list_filter = ("platform",)
-    ordering = ("order",)
-    list_display_links = ("platform",)  # <-- Add this line explicitly
 
 
 @admin.register(HeroSection)
